@@ -92,7 +92,8 @@ export class LinkDetailsInternal extends React.Component<LinkDetailsProps, LinkD
             try {
                 const token = getAuthToken();
                 if (token && this.state.link) {
-                    const newComment = await createComment(
+                    //const newComment = await createComment(
+                    await createComment(
                         this.state.link.id,
                         this.state.newCommentContent,
                         token

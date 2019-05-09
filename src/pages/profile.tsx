@@ -59,7 +59,7 @@ export class ProfileInternal extends React.Component<ProfileProps, ProfileState>
             return <div>Loading...</div>;
         } else {
             return <div>
-                <img src={this.state.user.pic} />
+                <img src={this.state.user.pic} alt="" />
                 <div>{this.state.user.email}</div>
                 <div>{this.state.user.bio}</div>
                 <Listview
