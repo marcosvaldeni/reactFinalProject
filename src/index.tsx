@@ -7,6 +7,7 @@ import { Links } from "./pages/links";
 import { LinkDetails } from './pages/link_details';
 import { SignIn, SignUp } from './pages/login';
 import { Profile } from './pages/profile';
+import { LinkCreator } from './pages/link_creation';
 import { Header } from "./components/header/header";
 import { Footer } from "./components/footer/footer";
 
@@ -23,6 +24,8 @@ ReactDOM.render(
                     <Route exact path="/sign_up" component={SignUp} />
                     <Route exact path="/profile" component={Profile} />
                     <Route exact path="/profile/:id" component={Profile} />
+                    <Route exact path="/link_editor/:id" component={LinkCreator} />
+                    <Route exact path="/link_editor" component={LinkCreator} />
                 </Switch>
             </div>
             <div>

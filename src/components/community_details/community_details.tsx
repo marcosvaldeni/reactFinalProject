@@ -41,11 +41,9 @@ export class CommunityDetails extends React.Component<CommunityDetailsProps, Com
     public componentWillMount() {
         (async () => {
             const token = getAuthToken();
-            console.log(token);
             this.setState({ token: token });
             const number = await getUserCount();
             this.setState({ number: number.count });
-            console.log(number);
 
         })();
     }
@@ -54,8 +52,15 @@ export class CommunityDetails extends React.Component<CommunityDetailsProps, Com
             <div style={left}>r/CCT</div>
             <div style={right}>{(this.state.number)} Users</div>
             <div style={clear}></div>
-            <button>Create Post</button>
+            {this._setLink()}
         </div>
+    }
+    private _setLink() {
+        if (this.state.token !== null) {
+            return <Link className="btn right" to="/link_editor">Create Post</Link>
+        } else {
+            return <Link className="btn right" to="/sign_in">Create Post</Link>
+        }
     }
 }
 
