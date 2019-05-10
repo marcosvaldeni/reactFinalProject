@@ -1,11 +1,11 @@
 import React from 'react';
 
 export interface CommentDetails {
-    id: number;
-    userId: number;
-    email: string;
+    id?: number;
+    userId?: number;
+    email?: string;
     content: string;
-    dateTime: string;
+    dateTime?: string;
 }
 
 interface CommentProps extends CommentDetails {
@@ -22,20 +22,26 @@ export class Comment extends React.Component<CommentProps, CommentState> {
             <table className="comment-details">
                 <tbody>
                     <tr>
-                        <td className="left">
-                            <div className="vote-btn">↑</div>
-                            <div className="vote-btn">↓</div>
-                        </td>
                         <td className="right">
-                            <div className="audit">{this.renderTimeSinceDate(this.props.dateTime)} ago by {this.props.email}</div>
-                            <h2 className="content">{this.props.content}</h2>
+                            {this._layout()}
+
                         </td>
                     </tr>
                 </tbody>
             </table>
         );
     }
-    private renderTimeSinceDate(jsonDate: string) {
+    private _layout() {
+        if (this.props.dateTime !== undefined) {
+            return <div>
+                <div className="audit">{this._renderTimeSinceDate(this.props.dateTime)} ago by {this.props.email}</div>
+                <p className="comment-text">{this.props.content}</p>
+            </div>
+        } else {
+            return <p>{this.props.content}</p>
+        }
+    }
+    private _renderTimeSinceDate(jsonDate: string) {
         const time = Date.parse(jsonDate);
         const now = new Date().getTime();
         const difference = (now - time) / 1000;

@@ -149,3 +149,27 @@ a {
   font-weight: 800;
   font-size: 30px;
 }
+
+.comment-text {
+  font-size: 18px;
+}
+
+.footer {
+  width: 100%;
+  background-color: #717375;
+  margin: 40px 0 0 0;
+  padding: 20px 0 20px 0;
+}
+
+.footer-body {
+  min-height: 100px;
+  width: 1000px;
+  margin: 0 auto;
+}
+
+.img {
+  border-top-left-radius: 50% 50%;
+  border-top-right-radius: 50% 50%;
+  border-bottom-right-radius: 50% 50%;
+  border-bottom-left-radius: 50% 50%;
+}

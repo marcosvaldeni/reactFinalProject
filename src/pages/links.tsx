@@ -60,9 +60,9 @@ export class Links extends React.Component<LinksProps, LinksState> {
                         items={
                             filteredLinks.map((link, linkIndex) => {
                                 return (
-                                    <Link to={`/link_details/${link.id}`}>
-                                        <LinkDetails key={linkIndex} {...link} />
-                                    </Link>
+
+                                    <LinkDetails key={linkIndex} {...link} />
+
                                 );
                             })
                         }
