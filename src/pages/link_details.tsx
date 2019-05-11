@@ -97,6 +97,10 @@ export class LinkDetailsInternal extends React.Component<LinkDetailsProps, LinkD
                         this.state.newCommentContent,
                         token
                     );
+                    (async () => {
+                        const data = await getData(this.props.id);
+                        this.setState({ link: data });
+                    })();
                 }
             } catch (err) {
 

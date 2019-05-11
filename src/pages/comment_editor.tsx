@@ -2,31 +2,21 @@ import React from 'react';
 import { getAuthToken } from "../components/with_auth/with_auth";
 import * as H from 'history';
 
-const community: React.CSSProperties = {
-    borderStyle: "solid",
-    borderWidth: "1px",
-    height: "200px",
-    width: "300px",
-    padding: "30px"
-};
-
-interface LinkCreatorProps {
-    history: H.History,
-    id: string
+interface CommentEditorProps {
+    id: string;
+    history: H.History;
 }
 
-interface LinkCreatorState {
-    title: string,
-    URL: string,
+interface CommentEditorState {
+    comment: string,
     token: string | null
 }
 
-export class LinkCreator extends React.Component<LinkCreatorProps, LinkCreatorState> {
-    public constructor(props: LinkCreatorProps) {
+export class CommentEditor extends React.Component<CommentEditorProps, CommentEditorState> {
+    public constructor(props: CommentEditorProps) {
         super(props);
         this.state = {
-            title: "",
-            URL: "",
+            comment: "",
             token: getAuthToken()
         };
     }
@@ -40,7 +30,7 @@ export class LinkCreator extends React.Component<LinkCreatorProps, LinkCreatorSt
     public render() {
         return (
             <div className="login-container">
-                <h1>Create New Post</h1>
+                <h1>Edit Comment</h1>
                 <div>
                 </div>
                 <div>
@@ -49,18 +39,8 @@ export class LinkCreator extends React.Component<LinkCreatorProps, LinkCreatorSt
                         style={{ width: "94%" }}
                         type="text"
                         placeholder="Title"
-                        value={this.state.title}
-                        onChange={(e) => this.setState({ title: e.currentTarget.value })}
-                    />
-                </div>
-                <div>
-                    <input
-                        className="input-text"
-                        style={{ width: "94%" }}
-                        type="text"
-                        placeholder="Link Address"
-                        value={this.state.URL}
-                        onChange={(e) => this.setState({ URL: e.currentTarget.value })}
+                        value="{this.state.title}"
+                        onChange={(e) => this.setState({ comment: e.currentTarget.value })}
                     />
                 </div>
                 <div>
@@ -79,7 +59,10 @@ export class LinkCreator extends React.Component<LinkCreatorProps, LinkCreatorSt
         (async () => {
 
             if (this.state.token) {
-                await createLink(this.state.title, this.state.URL, this.state.token);
+                if (this.props.id !== undefined) {
+                    await updateComment(this.props.id, this.state.comment, this.state.token);
+                }
+
                 this.props.history.push("/");
             } else {
                 this.props.history.push("/sign_in");
@@ -91,20 +74,19 @@ export class LinkCreator extends React.Component<LinkCreatorProps, LinkCreatorSt
 
 }
 
-async function createLink(title: string, url: string, jwt: string) {
-    const data = {
-        title: title,
-        url: url
+async function updateComment(id: string, content: string, jwt: string) {
+    const update = {
+        content: content
     };
     const response = await fetch(
-        "/api/v1/links",
+        `/api/v1/comments/${id}`,
         {
-            method: "POST",
+            method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
                 "x-auth-token": jwt
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(update)
         }
     );
     const json = await response.json();

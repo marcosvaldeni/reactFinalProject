@@ -173,3 +173,37 @@ a {
   border-bottom-right-radius: 50% 50%;
   border-bottom-left-radius: 50% 50%;
 }
+
+.linkContainer {
+  min-height: 100px;
+  border: solid;
+  border-width: 1px 1px 1px 1px; 
+  margin: 10px 0 0 0;
+}
+
+.linkVote {
+  height: 100px;
+  width: 40px;
+  text-align: center;
+}
+
+.linkContent {
+  min-height: 200;
+  width: 680px;
+  border: solid;
+  border-width: 0  0 0 1px; 
+  padding: 15px;
+}
+
+.alingRight {
+  float: right;
+}
+
+.alingLeft {
+  float: left;
+}
+
+
+.clear {
+  clear: both;
+}

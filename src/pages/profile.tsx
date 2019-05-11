@@ -43,6 +43,7 @@ interface ProfileProps {
 }
 
 interface ProfileState {
+    userId: number | undefined;
     user: null | User;
 }
 
@@ -50,6 +51,7 @@ export class ProfileInternal extends React.Component<ProfileProps, ProfileState>
     public constructor(props: ProfileProps) {
         super(props);
         this.state = {
+            userId: undefined,
             user: null
         };
     }
@@ -63,6 +65,7 @@ export class ProfileInternal extends React.Component<ProfileProps, ProfileState>
                 if (token) {
                     const user = await getProfile(token);
                     this.setState({ user: user });
+                    this.setState({ userId: user.id });
                 }
             }
         })();
@@ -76,14 +79,14 @@ export class ProfileInternal extends React.Component<ProfileProps, ProfileState>
                     <Listview
                         items={
                             this.state.user.links.map(link => <div>
-                                <LinkDetails title={link.title} url={link.url} />
+                                <LinkDetails id={link.id} title={link.title} url={link.url} />
                             </div>)
                         }
                     />
                     <Listview
                         items={
                             this.state.user.comments.map(comment => <div>
-                                <CommentComponet content={comment.content} />
+                                <CommentComponet content={comment.content} owner={this._owner(comment.userId)} />
                             </div>)
                         }
                     />
@@ -98,8 +101,18 @@ export class ProfileInternal extends React.Component<ProfileProps, ProfileState>
             return <UserDetails email={this.state.user.email} img={this.state.user.pic} bio={this.state.user.bio} />
         }
     }
+    private _owner(userId: number) {
+        if (userId === this.state.userId) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
 
 }
+
+
 
 export const Profile = withRouter(props => <ProfileInternal id={props.match.params.id} />);
 

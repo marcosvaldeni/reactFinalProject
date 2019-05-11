@@ -57,9 +57,9 @@ export class CommunityDetails extends React.Component<CommunityDetailsProps, Com
     }
     private _setLink() {
         if (this.state.token !== null) {
-            return <Link className="btn right" to="/link_editor">Create Post</Link>
+            return <Link className="" to="/link_editor">Create Post</Link>
         } else {
-            return <Link className="btn right" to="/sign_in">Create Post</Link>
+            return <Link to="/sign_in">Create Post</Link>
         }
     }
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+//import './css/bootstrap.css';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { Links } from "./pages/links";

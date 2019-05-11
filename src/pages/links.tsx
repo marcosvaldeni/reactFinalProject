@@ -3,6 +3,7 @@ import { Listview } from "../components/listview/listview";
 import { Link } from "react-router-dom";
 import { LinkDetails, LinkPreviewDetails } from "../components/link_details/link_details";
 import { CommunityDetails } from "../components/community_details/community_details";
+import { getAuthToken } from "../components/with_auth/with_auth";
 
 const links: React.CSSProperties = {
     minHeight: "550px",
@@ -59,9 +60,20 @@ export class Links extends React.Component<LinksProps, LinksState> {
                     <Listview
                         items={
                             filteredLinks.map((link, linkIndex) => {
+                                console.log("link");
+                                console.log(link);
                                 return (
 
-                                    <LinkDetails key={linkIndex} {...link} />
+                                    <LinkDetails
+                                        key={linkIndex}
+                                        {...link}
+                                        onUpVote={() => {
+                                            this._onVote(link.id, true)
+                                        }}
+                                        onDownVote={() => {
+                                            this._onVote(link.id, false)
+                                        }}
+                                    />
 
                                 );
                             })
@@ -78,6 +90,46 @@ export class Links extends React.Component<LinksProps, LinksState> {
     private _onSearch(query: string) {
         this.setState({ query: query });
     }
+    private _onVote(id: number, isUp: boolean): void {
+
+        (async () => {
+            const data = await vote(id, isUp);
+            if (data) {
+                (this.state.links as Array<LinkPreviewDetails>).forEach((link) => {
+                    if (link.id == id) {
+                        console.log("link.voteCount");
+                        console.log(link);
+                    }
+                });
+
+                const voted = await getData();
+                this.setState({ links: voted });
+
+                return;
+                //TODO compare previous vote count
+            }
+            // this.setState({ links: data });
+        })();
+    }
+}
+
+
+export async function vote(id: number, isUp: boolean) {
+    const token = getAuthToken();
+    if (token) {
+        const reponse = await fetch(
+            `/api/v1/links/${id}/${isUp ? 'up' : 'down'}vote`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-auth-token": token
+                }
+            }
+        );
+        const json = await reponse.json();
+        return json;
+    }
 }
 
 async function getData() {
@@ -85,3 +137,4 @@ async function getData() {
     const json = await response.json();
     return json as LinkPreviewDetails[];
 }
+

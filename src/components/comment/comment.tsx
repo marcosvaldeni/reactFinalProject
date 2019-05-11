@@ -6,10 +6,11 @@ export interface CommentDetails {
     email?: string;
     content: string;
     dateTime?: string;
+    owner: boolean | undefined;
 }
 
 interface CommentProps extends CommentDetails {
-    // ...
+
 }
 
 interface CommentState {
@@ -40,6 +41,9 @@ export class Comment extends React.Component<CommentProps, CommentState> {
         } else {
             return <p>{this.props.content}</p>
         }
+    }
+    private editor() {
+
     }
     private _renderTimeSinceDate(jsonDate: string) {
         const time = Date.parse(jsonDate);
