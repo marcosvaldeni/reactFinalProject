@@ -4,6 +4,12 @@ import { withRouter } from "react-router-dom";
 import * as H from 'history';
 import { setAuthToken } from "../components/with_auth/with_auth";
 
+/*
+ * Implementing a Web UI with TypeScript and React
+ * CCT College Dublin
+ * Name: Marcos Valdeni Lucas - 2016280
+ */
+
 const credentialSchema = {
     email: joi.string().email().required(),
     password: joi.string().min(3).max(30).required()
@@ -32,7 +38,7 @@ export class SignInOrSignUpInternal extends React.Component<SignInOrSignUpProps,
     public render() {
         return (
             <div className="login-container">
-                <h1>{this.props.isSignIn ? "Sign In": "Sign Up"}</h1>
+                <h1>{this.props.isSignIn ? "Sign In" : "Sign Up"}</h1>
                 <div>
                     {this._renderServerErrors()}
                     {this._renderValidationErrors()}
@@ -118,7 +124,7 @@ export class SignInOrSignUpInternal extends React.Component<SignInOrSignUpProps,
                     // Redirect to sign in page
                     this.props.history.push("/sign_in");
                 }
-            } catch(err) {
+            } catch (err) {
                 this.setState({ error: err.error });
             }
         })();
@@ -128,8 +134,8 @@ export class SignInOrSignUpInternal extends React.Component<SignInOrSignUpProps,
 // withRouter pass some props that contain the history to the
 // <SignInOrSignUpInternal> component and returns 
 // a new component named <SignIn>
-export const SignIn = withRouter(props => <SignInOrSignUpInternal isSignIn={true} {...props}/>);
-export const SignUp = withRouter(props => <SignInOrSignUpInternal isSignIn={false} {...props}/>);
+export const SignIn = withRouter(props => <SignInOrSignUpInternal isSignIn={true} {...props} />);
+export const SignUp = withRouter(props => <SignInOrSignUpInternal isSignIn={false} {...props} />);
 
 async function getToken(email: string, password: string) {
     return new Promise<string>(function (resolve, reject) {

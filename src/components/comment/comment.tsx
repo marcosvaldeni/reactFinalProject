@@ -1,12 +1,17 @@
 import React from 'react';
 
+/*
+ * Implementing a Web UI with TypeScript and React
+ * CCT College Dublin
+ * Name: Marcos Valdeni Lucas - 2016280
+ */
+
 export interface CommentDetails {
     id?: number;
     userId?: number;
     email?: string;
     content: string;
     dateTime?: string;
-    owner: boolean | undefined;
 }
 
 interface CommentProps extends CommentDetails {

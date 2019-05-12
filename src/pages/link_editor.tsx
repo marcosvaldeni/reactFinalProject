@@ -1,18 +1,17 @@
 import React from 'react';
 import { getAuthToken } from "../components/with_auth/with_auth";
+import { withRouter } from "react-router";
 import * as H from 'history';
 
-const community: React.CSSProperties = {
-    borderStyle: "solid",
-    borderWidth: "1px",
-    height: "200px",
-    width: "300px",
-    padding: "30px"
-};
+/*
+ * Implementing a Web UI with TypeScript and React
+ * CCT College Dublin
+ * Name: Marcos Valdeni Lucas - 2016280
+ */
 
 interface LinkCreatorProps {
-    history: H.History,
-    id: string
+    history: H.History;
+    id: number | undefined
 }
 
 interface LinkCreatorState {
@@ -21,7 +20,7 @@ interface LinkCreatorState {
     token: string | null
 }
 
-export class LinkCreator extends React.Component<LinkCreatorProps, LinkCreatorState> {
+export class LinkCreatorInternal extends React.Component<LinkCreatorProps, LinkCreatorState> {
     public constructor(props: LinkCreatorProps) {
         super(props);
         this.state = {
@@ -30,9 +29,13 @@ export class LinkCreator extends React.Component<LinkCreatorProps, LinkCreatorSt
             token: getAuthToken()
         };
     }
-    public componentWillMount() {
+    public componentDidMount() {
+
         (async () => {
-            if (this.props.id) {
+
+            if (this.props.id !== undefined) {
+                const link = await getLinkById(this.props.id);
+                this.setState({ title: link.title, URL: link.url });
 
             }
         })();
@@ -40,10 +43,11 @@ export class LinkCreator extends React.Component<LinkCreatorProps, LinkCreatorSt
     public render() {
         return (
             <div className="login-container">
-                <h1>Create New Post</h1>
+                <h1>{this.props.id ? "Editing Post" : "Create New Post"}</h1>
                 <div>
                 </div>
                 <div>
+
                     <input
                         className="input-text"
                         style={{ width: "94%" }}
@@ -79,17 +83,22 @@ export class LinkCreator extends React.Component<LinkCreatorProps, LinkCreatorSt
         (async () => {
 
             if (this.state.token) {
-                await createLink(this.state.title, this.state.URL, this.state.token);
+
+                if (this.props.id) {
+                    await updateLink(this.props.id, this.state.title, this.state.URL, this.state.token);
+                } else {
+                    await createLink(this.state.title, this.state.URL, this.state.token);
+                }
                 this.props.history.push("/");
             } else {
                 this.props.history.push("/sign_in");
             }
-
-
         })();
     }
 
 }
+
+export const LinkCreator = withRouter(props => <LinkCreatorInternal id={props.match.params.id} history={props.history} />);
 
 async function createLink(title: string, url: string, jwt: string) {
     const data = {
@@ -105,6 +114,32 @@ async function createLink(title: string, url: string, jwt: string) {
                 "x-auth-token": jwt
             },
             body: JSON.stringify(data)
+        }
+    );
+    const json = await response.json();
+    return json;
+}
+
+async function getLinkById(id: number) {
+    const response = await fetch(`/api/v1/links/${id}`);
+    const json = await response.json();
+    return json;
+}
+
+async function updateLink(id: number, contentTitle: string, contentUrl: string, jwt: string) {
+    const update = {
+        title: contentTitle,
+        url: contentUrl
+    };
+    const response = await fetch(
+        `/api/v1/links/${id}`,
+        {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "x-auth-token": jwt
+            },
+            body: JSON.stringify(update)
         }
     );
     const json = await response.json();

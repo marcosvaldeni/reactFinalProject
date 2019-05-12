@@ -5,6 +5,12 @@ import { Comment, CommentDetails } from "../components/comment/comment";
 import { Listview } from "../components/listview/listview";
 import { getAuthToken } from "../components/with_auth/with_auth"
 
+/*
+ * Implementing a Web UI with TypeScript and React
+ * CCT College Dublin
+ * Name: Marcos Valdeni Lucas - 2016280
+ */
+
 interface LinkData {
     id: number;
     userId: number;
@@ -45,7 +51,7 @@ export class LinkDetailsInternal extends React.Component<LinkDetailsProps, LinkD
             return <div>Loading...</div>;
         } else {
             return <div>
-                <LinkDetailsComponent {...this.state.link} />
+                <LinkDetailsComponent {...this.state.link} owner={false} />
                 <Listview
                     items={
                         this.state.link.comments.map((comment, commentIndex) => {

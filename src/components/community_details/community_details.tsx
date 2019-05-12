@@ -2,6 +2,12 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import { getAuthToken } from "../with_auth/with_auth";
 
+/*
+ * Implementing a Web UI with TypeScript and React
+ * CCT College Dublin
+ * Name: Marcos Valdeni Lucas - 2016280
+ */
+
 const community: React.CSSProperties = {
     borderStyle: "solid",
     borderWidth: "1px",
@@ -51,15 +57,19 @@ export class CommunityDetails extends React.Component<CommunityDetailsProps, Com
         return <div style={community}>
             <div style={left}>r/CCT</div>
             <div style={right}>{(this.state.number)} Users</div>
-            <div style={clear}></div>
+            <div className="clear"></div>
             {this._setLink()}
         </div>
     }
     private _setLink() {
         if (this.state.token !== null) {
-            return <Link className="" to="/link_editor">Create Post</Link>
+            return <div className="fd15">
+                <Link className="btn createPost" to="/link_editor">Create Post</Link>
+            </div>
         } else {
-            return <Link to="/sign_in">Create Post</Link>
+            return <div className="fd15">
+                <Link className="btn createPost" to="/sign_in">Create Post</Link>
+            </div>
         }
     }
 }

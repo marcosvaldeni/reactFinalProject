@@ -1,5 +1,10 @@
 import React from 'react';
 
+/*
+ * Implementing a Web UI with TypeScript and React
+ * CCT College Dublin
+ * Name: Marcos Valdeni Lucas - 2016280
+ */
 
 const container: React.CSSProperties = {
     borderStyle: "solid",
@@ -20,9 +25,6 @@ interface UserDetailsProps {
 interface UserDetailsState { }
 
 export class UserDetails extends React.Component<UserDetailsProps, UserDetailsState> {
-    public constructor(props: UserDetailsProps) {
-        super(props);
-    }
     public render() {
         return <div style={container}>
             {this._showImg()}

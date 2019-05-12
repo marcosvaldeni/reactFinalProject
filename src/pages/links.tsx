@@ -1,9 +1,14 @@
 import * as React from "react";
 import { Listview } from "../components/listview/listview";
-import { Link } from "react-router-dom";
 import { LinkDetails, LinkPreviewDetails } from "../components/link_details/link_details";
 import { CommunityDetails } from "../components/community_details/community_details";
 import { getAuthToken } from "../components/with_auth/with_auth";
+
+/*
+ * Implementing a Web UI with TypeScript and React
+ * CCT College Dublin
+ * Name: Marcos Valdeni Lucas - 2016280
+ */
 
 const links: React.CSSProperties = {
     minHeight: "550px",
@@ -26,6 +31,7 @@ interface LinksProps {
 interface LinksState {
     links: LinkPreviewDetails[] | null;
     query: string;
+    userId: number | undefined;
 }
 
 export class Links extends React.Component<LinksProps, LinksState> {
@@ -33,13 +39,19 @@ export class Links extends React.Component<LinksProps, LinksState> {
         super(props);
         this.state = {
             links: null,
-            query: ""
+            query: "",
+            userId: undefined
         };
     }
     public componentWillMount() {
         (async () => {
             const data = await getData();
             this.setState({ links: data });
+            const token = getAuthToken();
+            if (token) {
+                const user = await getProfile(token);
+                this.setState({ userId: user.id });
+            }
         })();
     }
     public render() {
@@ -60,8 +72,6 @@ export class Links extends React.Component<LinksProps, LinksState> {
                     <Listview
                         items={
                             filteredLinks.map((link, linkIndex) => {
-                                console.log("link");
-                                console.log(link);
                                 return (
 
                                     <LinkDetails
@@ -73,6 +83,7 @@ export class Links extends React.Component<LinksProps, LinksState> {
                                         onDownVote={() => {
                                             this._onVote(link.id, false)
                                         }}
+                                        owner={this._owner(link.userId)}
                                     />
 
                                 );
@@ -86,6 +97,7 @@ export class Links extends React.Component<LinksProps, LinksState> {
                 <div style={clear}></div>
             </div>;
         }
+
     }
     private _onSearch(query: string) {
         this.setState({ query: query });
@@ -95,24 +107,22 @@ export class Links extends React.Component<LinksProps, LinksState> {
         (async () => {
             const data = await vote(id, isUp);
             if (data) {
-                (this.state.links as Array<LinkPreviewDetails>).forEach((link) => {
-                    if (link.id == id) {
-                        console.log("link.voteCount");
-                        console.log(link);
-                    }
-                });
 
                 const voted = await getData();
                 this.setState({ links: voted });
 
                 return;
-                //TODO compare previous vote count
             }
-            // this.setState({ links: data });
         })();
     }
+    private _owner(userId: any) {
+        if (userId === this.state.userId) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
-
 
 export async function vote(id: number, isUp: boolean) {
     const token = getAuthToken();
@@ -136,5 +146,20 @@ async function getData() {
     const response = await fetch("/api/v1/links/");
     const json = await response.json();
     return json as LinkPreviewDetails[];
+}
+
+async function getProfile(token: string) {
+    const reponse = await fetch(
+        "/api/v1/auth/profile",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "x-auth-token": token
+            }
+        }
+    );
+    const json = await reponse.json();
+    return json;
 }
 

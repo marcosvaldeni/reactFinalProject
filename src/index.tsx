@@ -1,16 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-//import './css/bootstrap.css';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { Links } from "./pages/links";
 import { LinkDetails } from './pages/link_details';
 import { SignIn, SignUp } from './pages/login';
 import { Profile } from './pages/profile';
-import { LinkCreator } from './pages/link_creation';
+import { LinkCreator } from './pages/link_editor';
 import { Header } from "./components/header/header";
 import { Footer } from "./components/footer/footer";
+import { LinkDelete } from "./pages/link_delete";
+
+/*
+ * Implementing a Web UI with TypeScript and React
+ * CCT College Dublin
+ * Name: Marcos Valdeni Lucas - 2016280
+ */
 
 ReactDOM.render(
     <BrowserRouter>
@@ -27,6 +33,7 @@ ReactDOM.render(
                     <Route exact path="/profile/:id" component={Profile} />
                     <Route exact path="/link_editor/:id" component={LinkCreator} />
                     <Route exact path="/link_editor" component={LinkCreator} />
+                    <Route exact path="/link_delete/:id" component={LinkDelete} />
                 </Switch>
             </div>
             <div>

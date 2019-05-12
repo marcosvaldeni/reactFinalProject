@@ -1,5 +1,11 @@
 import React from 'react';
 
+/*
+ * Implementing a Web UI with TypeScript and React
+ * CCT College Dublin
+ * Name: Marcos Valdeni Lucas - 2016280
+ */
+
 interface ListviewProps {
     items: JSX.Element[];
 }

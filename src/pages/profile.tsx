@@ -6,6 +6,12 @@ import { UserDetails } from "../components/user_details/user_details";
 import { LinkDetails } from "../components/link_details/link_details";
 import { Comment as CommentComponet } from "../components/comment/comment";
 
+/*
+ * Implementing a Web UI with TypeScript and React
+ * CCT College Dublin
+ * Name: Marcos Valdeni Lucas - 2016280
+ */
+
 const activity: React.CSSProperties = {
     minHeight: "550px",
     width: "700px",
@@ -79,14 +85,14 @@ export class ProfileInternal extends React.Component<ProfileProps, ProfileState>
                     <Listview
                         items={
                             this.state.user.links.map(link => <div>
-                                <LinkDetails id={link.id} title={link.title} url={link.url} />
+                                <LinkDetails id={link.id} title={link.title} url={link.url} owner={this._owner(link.userId)} />
                             </div>)
                         }
                     />
                     <Listview
                         items={
                             this.state.user.comments.map(comment => <div>
-                                <CommentComponet content={comment.content} owner={this._owner(comment.userId)} />
+                                <CommentComponet content={comment.content} />
                             </div>)
                         }
                     />
@@ -107,12 +113,8 @@ export class ProfileInternal extends React.Component<ProfileProps, ProfileState>
         } else {
             return false;
         }
-
     }
-
 }
-
-
 
 export const Profile = withRouter(props => <ProfileInternal id={props.match.params.id} />);
 

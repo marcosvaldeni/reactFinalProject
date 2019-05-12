@@ -207,3 +207,11 @@ a {
 .clear {
   clear: both;
 }
+
+.createPost {
+  padding: 5px 50px 5px 50px;
+}
+
+.fd15 {
+  padding: 80px 10px 50px 0;
+}

@@ -2,6 +2,12 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { withAuth } from "../with_auth/with_auth";
 
+/*
+ * Implementing a Web UI with TypeScript and React
+ * CCT College Dublin
+ * Name: Marcos Valdeni Lucas - 2016280
+ */
+
 interface HeaderInternalProps {
     token: string | null
 }
